@@ -1,0 +1,119 @@
+:root {
+    --view-btn-cl: black;
+    --header-bg: white;
+    --header-color: black;
+    --img-color: #b810da;
+}
+
+body.dark {
+    --view-btn-cl: rgb(215, 212, 212);
+    --header-color: rgb(215, 212, 212);
+
+
+}
+
+.view_gallery_btn-2 {
+    width: 10rem;
+    padding: .5rem 0rem;
+    color: var(--view-btn-cl);
+    font-weight: 600;
+    box-shadow: 0px 0px .3rem gray;
+    display: flex;
+    gap: .1rem;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-block-start: 2rem;
+}
+
+.view_gallery_btn-2:hover {
+    background-color: white;
+}
+
+.header-1 {
+    background-color: var(--header-bg);
+    box-shadow: 0px 0px .3rem gray;
+    color: var(--header-color);
+    padding: .5rem inherit;
+    overflow-x: hidden;
+}
+
+.contacts {
+    list-style: none;
+    display: flex;
+    gap: .5rem;
+}
+
+.contacts img {
+    width: 20px;
+    height: 20px;
+    padding: .5rem .5rem;
+    border-radius: 5rem;
+    cursor: pointer;
+}
+
+.contacts li {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/*The info conatainer that only visble when hovered on the list items*/
+.info {
+    padding: 0rem 0rem;
+    border-radius: 3rem;
+    box-shadow: 0px 0px .3rem gray;
+    width: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transition: width .2s ease, padding .1s ease;
+}
+
+.contacts > .l > img:hover {
+    box-shadow: 0px 0px .3rem gray;
+    scale: 1.4;
+
+
+}
+
+.contacts .l:has(> img:hover) .info {
+    width: auto;
+    padding: .5rem .5rem;
+    pointer-events: all;
+}
+
+.contacts .insta-l:hover .info{
+    width: auto;
+    padding: .5rem .5rem;
+    pointer-events: all;
+}
+
+/*Instagram container at the top of the header*/
+.inst_cnt {
+    display: flex;
+    align-items: center;
+    gap: .2rem;
+}
+
+.inst_cnt .ig_profile {
+    width: 30px;
+    border-radius: 4rem;
+    object-fit: cover;
+}
+
+.ig_child_cnt_1 {
+    display: flex;
+    flex-direction: column;
+    gap: .1rem;
+}
+
+.ig_child_cnt_1 h2 {
+    font-size: 1rem;
+    font-family: sans-serif;
+    margin: 0;
+}
+
+.ig_child_cnt_1 span {
+    color: gray;
+    font-size: 12px;
+    font-family: sans-serif;
+}

@@ -1,10 +1,12 @@
 :root {
     --primary-border-color: rgb(63, 95, 255);
-    --primary-color: rgb(207, 206, 206);
+    --primary-color: rgb(35, 34, 34);
     --hf-color: rgb(2, 2, 36);
     --max-width-a: 2000px;
     --gal-cl: black;
-
+    --bg-color: whitesmoke;
+    --b-name-color: rgb(117, 99, 98);
+    --theme-color: rgb(133, 114, 132);
 }
 
 * {
@@ -19,8 +21,11 @@ body.dark {
     --primary-color: rgb(207, 206, 206);
     --hf-color: rgb(2, 2, 36);
     --max-width-a: 2000px;
-    background-color: rgb(8, 25, 63);
+    --bg-color: rgb(2, 25, 63);
     --gal-cl: gray;
+    --b-name-color: rgb(214, 181, 177);
+    --theme-color: rgb(193, 171, 192);
+
 }
 
 body {
@@ -29,6 +34,7 @@ body {
     align-items: center;
     overflow-x: hidden;
     min-height: 100dvh;
+    background: var(--bg-color);
 }
 
 .app {
@@ -45,13 +51,11 @@ body {
 
     display: flex;
     flex-direction: column;
-    gap: .4rem;
     align-items: center;
     width: 100%;
-
     min-height: 100dvh;
-    background-image: url('../images/background.png');
     overflow-x: hidden;
+    padding-bottom: 1rem;
 }
 
 .headSec {
@@ -60,18 +64,19 @@ body {
     flex-direction: column;
     align-items: center;
 }
+
 .abt {
     display: flex;
 }
 
-.abt > h1 {
+.abt>h1 {
     margin-block-start: 10rem;
 }
 
 .quick_access {
 
     width: 90%;
-    padding: 1rem 1rem;
+    padding: .5rem 1rem;
     border-radius: 4rem;
     background-color: var(--hf-color);
     color: white;
@@ -86,11 +91,14 @@ body {
     display: flex;
     gap: .2rem;
     font-size: 12px;
+    align-items: center;
 }
 
 .logo_image {
     width: 30px;
+    height: 30px;
     border-radius: 5rem;
+    border: 3px solid var(--primary-border-color);
 }
 
 .primary_btns {
@@ -102,10 +110,6 @@ body {
     cursor: pointer;
 }
 
-.primary_btns:hover {
-    background-color: rgba(2, 2, 61, 0.37);
-}
-
 .quick_section {
 
     width: 90%;
@@ -114,13 +118,24 @@ body {
     display: flex;
     color: var(--primary-color);
     gap: 1rem;
+    cursor: pointer;
 }
 
+.quick_section > a:hover, .quick_section > button:hover {
+   color: rgb(128, 96, 1);
+}
+
+.quick_section .quick_ic {
+    width: 20px;
+    height: 20px;
+}
 .links {
     color: var(--primary-color);
     text-decoration: none;
     border-bottom: 1px solid var(--primary-border-color);
     padding: .3rem .2rem;
+    display: flex;
+    align-items: center;
 
 }
 
@@ -145,7 +160,7 @@ body {
 
 .b_name {
     font-size: 6rem;
-    color: rgb(214, 181, 177);
+    color:  var(--b-name-color);
     font-family: "Tangerine", cursive;
     font-weight: 700;
     font-style: normal;
@@ -154,7 +169,7 @@ body {
 
 .theme {
     font-size: 1.3rem;
-    color: rgb(245, 221, 244);
+    color: var(--theme-color);
 }
 
 .beauty_img {
@@ -171,16 +186,24 @@ body {
     gap: 1rem;
     align-self: center;
     margin: 0;
+    margin-block-start: 6rem;
 }
 
 .n {
     display: flex;
+    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
     width: 97%;
+    gap: 4rem;
 }
 
 .n>h3 {
-    font-size: 2rem;
+    font-size: 1.7rem;
+    font-family: sans-serif;
+    max-width: 30rem;
+    text-align: center;
+    color: var(--b-name-color);
 }
 
 .n>span {
@@ -285,9 +308,6 @@ footer form {
     color: var(--primary-color);
 }
 
-.n h3 {
-    color: var(--gal-cl);
-}
 
 @media (max-width: 920px) {
     .gallary_cnt {
@@ -325,6 +345,7 @@ footer form {
 
     .main-frame {
         min-height: 100dvh;
+        
     }
 
     /*Footer*/
@@ -363,12 +384,9 @@ footer form {
         grid-row: unset;
     }
 
-    .item2 h2 {
-        font-size: 1.8rem;
-    }
-
     .main-frame {
-        height: 100dvh;
+        min-height: 100dvh;
+        
     }
 
     .cover {
