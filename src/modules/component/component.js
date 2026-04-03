@@ -9,9 +9,45 @@
  *
  * 
  */
+const _cachedComponent = {};
+
+/**Fetches the data */
+async function fetchComponet({
+    isCached = true,
+    cached_obj = null,
+    id = null,
+    path = null,
+    chached_age = null
+
+}) {
+    try {
+
+        const res = await fetch(path);
+        const data = await res.text();
+
+        
+        
+        /**Comment: Check if if user cached */
+        if (isCached) {
+            cached_obj[`${id}`] = {
+                component: data,
+                aged: chached_age,
+                cached_time: Date.now()
+            };
+        }
+        return data;
+
+    } catch(e) {
+        console.error(e);
+        document.body.innerHTML = `<div style="background: whitesmoke; padding: 1rem"><p><strong>Error</strong>${e}</p></div>`
+    }
+}
+
 export default async function comp({
     path = "",
     id = "",
+    isCached = true,
+    chached_age = 1000 * 60,
     parseFormat = "text/html",
     html = null,
     child = null,
@@ -19,13 +55,61 @@ export default async function comp({
 
 }) {
 
-    let data;
+    /**Holds the html string*/
+    let data;  //init
 
+    /**Comment: Check if html string is given instead */
     if (html !== null) {
-        data = html.toString()
+        /**Comment: Then set the given html string to the data */
+        data = html.toString();
+
     } else {
-        const res = await fetch(path);
-        data = await res.text();
+        /**Comment: Check for the cached html string by it id if it was cached */
+        if (Object.keys(_cachedComponent).includes(id)) {
+
+            //const
+            
+            const current_time = Date.now();
+            const cached_time = _cachedComponent[`${id}`].cached_time;
+            const cAge = _cachedComponent[`${id}`].aged;
+
+            /**Comment: check if cached has expired */
+            if (cached_time - current_time > cAge) {
+
+                console.log("fetching component again"); //debugging
+                /**Comment: Then fetch the Component again and cached*/
+                data = await fetchComponet({
+                    cached_obj: _cachedComponent,
+                    id: id,
+                    isCached: true,
+                    path: path,
+                    chached_age: chached_age
+                });
+
+            } else {
+                console.log("gettting cached component"); //debugging
+                /**Comment: Set the cached string to the data */
+                data = _cachedComponent[`${id}`].component;
+            }
+        } else {
+            try {
+                console.log("fetching new component");
+                /**Comment: Fetched the html component */
+                data = await fetchComponet({
+                    cached_obj: _cachedComponent,
+                    id: id,
+                    isCached: true,
+                    path: path,
+                    chached_age: chached_age
+                });
+                console.log("component fetched"); //debugging
+
+            }
+            catch (e) {
+                console.error(e);
+                document.body.innerHTML = `<div style="background: whitesmoke; padding: 1rem"><p><strong>Error</strong>${e}</p></div>`
+            }
+        }
     }
     const _dom = new DOMParser();
     const _parser = _dom.parseFromString(data, parseFormat);

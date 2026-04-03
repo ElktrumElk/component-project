@@ -20,7 +20,8 @@ export default async function ScriptA() {
     ]
 
     const router = new qRouter({
-        id: 'app'
+        id: 'app',
+        type: "destory"
     });
 
     router.initRoutes({

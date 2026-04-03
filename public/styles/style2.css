@@ -68,7 +68,7 @@ body.dark {
     transition: width .2s ease, padding .1s ease;
 }
 
-.contacts > .l > img:hover {
+.contacts>.l>img:hover {
     box-shadow: 0px 0px .3rem gray;
     scale: 1.4;
 
@@ -81,7 +81,7 @@ body.dark {
     pointer-events: all;
 }
 
-.contacts .insta-l:hover .info{
+.contacts .insta-l:hover .info {
     width: auto;
     padding: .5rem .5rem;
     pointer-events: all;
@@ -116,4 +116,9 @@ body.dark {
     color: gray;
     font-size: 12px;
     font-family: sans-serif;
+}
+
+.exp_more-2 {
+    padding: 1rem 1rem;
+    box-shadow: 0px 0px .3rem gray;
 }

@@ -1,3 +1,4 @@
+import { Await } from "react-router-dom";
 
 class qRouter {
     /** */
@@ -12,9 +13,10 @@ class qRouter {
         routes = []
 
     }) {
+        /**This holds the component-page*/
         this.pages = {};
 
-
+        /**Comment: store components */
         routes.forEach(route => {
             this.pages[`${route.name}`] = {
                 component: route.component
@@ -25,6 +27,7 @@ class qRouter {
     /**Path to push */
     async load(name) {
         try {
+            /**check if the pages exist */
             if (Object.keys(this.pages).includes(name)) {
 
                 /**Comment: Get the component from the created pages array*/
@@ -40,15 +43,19 @@ class qRouter {
                     throw new Error(`Router container with id '${this.id}' not found`);
                 }
 
+                /**Comment: Check if the component exist within the container */
                 if (Array.from(container.children).includes(document.getElementById(cmp.id))) {
 
                     document.getElementById(cmp.id).style.display = "";
 
+
                 } else {
                     container.appendChild(await this.pages[`${name}`].component);
+                    location.hash = cmp.id;
                 }
             }
         } catch (e) {
+
             const container = document.getElementById(this.id);
             if (container) {
                 container.innerText = "Path not found";
@@ -72,7 +79,7 @@ class qRouter {
                  * and the new one loads in
                  */
                 if (this.type === "destory") {
-                    document.getElementById(cmp.id).remove()
+                    document.getElementById(cmp.id).remove();
                 } else if (this.type === "hide") {
                     cmpElement.style.display = "none";
                 } else {
@@ -108,11 +115,11 @@ export default qRouter;
 
 export function crossEvent(event, id, cb) {
     document.addEventListener(event, (e) => {
-       
+
         const elem = e.target.closest(`#${id}`)
         if (elem) {
             cb && cb(cb)
-        }else {
+        } else {
             return "Error"
         }
     })
