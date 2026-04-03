@@ -148,16 +148,33 @@ export function autoRouting({
     switcher = null,
     setHashHistory = false,
 }) {
+    /**
+     * 
+     * @param {*} cb 
+     */
     function routeResolve(cb) {
 
 
         let id = location.hash.replace("#", "");
 
+        // Only call cb when it's a function (not an event object)
+        if (typeof cb === 'function') {
+            id = cb(id);
+            console.log("yes")
+        }
 
-        id = cb(id);
+        if (!id && setHashHistory) {
+            let __hash_his = localStorage.getItem("hash_history");
+            if (__hash_his) {
+                id = __hash_his;
+                localStorage.removeItem("hash_history");
+                console.log(__hash_his)
+            }
+        }
 
         if (!id) {
             id = 'home'; // default route
+            console.log("yo")
         }
 
         // Check if the route exists
@@ -180,10 +197,10 @@ export function autoRouting({
     }
 
     // Listen for hash changes to automatically route
-    window.addEventListener('hashchange', routeResolve);
+    window.addEventListener('hashchange', () => routeResolve());
 
     // Route on initial load
-    window.addEventListener("load", () => {
+    window.addEventListener("load",
         routeResolve((id) => {
             /**Retrieve current cached hashed pages */
             let __hash_his = localStorage.getItem("hash_history");
@@ -193,8 +210,10 @@ export function autoRouting({
                 if (setHashHistory) {
                     id = __hash_his;
                     localStorage.removeItem("hash_history");
+                    console.log(id)
+                    return id;
                 }
             }
         })
-    });
+    );
 }

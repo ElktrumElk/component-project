@@ -76,7 +76,7 @@ export default async function comp({
             /**Comment: check if cached has expired */
             if (cached_time - current_time > cAge) {
 
-                console.log("fetching component again"); //debugging
+                //console.log("fetching component again"); //debugging
                 /**Comment: Then fetch the Component again and cached*/
                 data = await fetchComponet({
                     cached_obj: _cachedComponent,
@@ -87,13 +87,13 @@ export default async function comp({
                 });
 
             } else {
-                console.log("gettting cached component"); //debugging
+                //console.log("gettting cached component"); //debugging
                 /**Comment: Set the cached string to the data */
                 data = _cachedComponent[`${id}`].component;
             }
         } else {
             try {
-                console.log("fetching new component");
+                //console.log("fetching new component");
                 /**Comment: Fetched the html component */
                 data = await fetchComponet({
                     cached_obj: _cachedComponent,
@@ -102,7 +102,7 @@ export default async function comp({
                     path: path,
                     chached_age: chached_age
                 });
-                console.log("component fetched"); //debugging
+                //console.log("component fetched"); //debugging
 
             }
             catch (e) {
