@@ -68,26 +68,33 @@ class qRouter {
 
         try {
 
-            let cmp = await this.pages[`${name}`].component;
+            let cmp = await this.pages[`${name}`]?.component;
 
-            // Check if component element exists before hiding
-            const cmpElement = document.getElementById(cmp.id);
-            if (cmpElement) {
+            if (cmp === undefined) {
+                Array.from(document.getElementById(this.id).children).forEach(_child => {
+                    _child.remove();
+                })
+            }
+            else {
+                // Check if component element exists before hiding
+                const cmpElement = document.getElementById(cmp.id);
+                if (cmpElement) {
 
-                /**Comment: Check for types.
-                 * if the destory is given then the current component will be destory
-                 * and the new one loads in
-                 */
-                if (this.type === "destory") {
-                    document.getElementById(cmp.id).remove();
-                } else if (this.type === "hide") {
-                    cmpElement.style.display = "none";
-                } else {
-                    cmpElement.style.display = "none";
+                    /**Comment: Check for types.
+                     * if the destory is given then the current component will be destory
+                     * and the new one loads in
+                     */
+                    if (this.type === "destory") {
+                        document.getElementById(cmp.id).remove();
+                    } else if (this.type === "hide") {
+                        cmpElement.style.display = "none";
+                    } else {
+                        cmpElement.style.display = "none";
+                    }
                 }
+                this.history.push(await this.pages[`${name}`].component);
             }
 
-            this.history.push(await this.pages[`${name}`].component);
 
         } catch (e) {
 
@@ -104,6 +111,7 @@ class qRouter {
             console.error('Router push error:', e)
             console.log(prev)
         }
+
     }
 
     async back(count) {
@@ -118,10 +126,75 @@ export function crossEvent(event, id, cb) {
 
         const elem = e.target.closest(`#${id}`)
         if (elem) {
-            cb && cb(cb)
+            cb && cb(e)
         } else {
             return "Error"
         }
     })
 
-} 
+}
+
+/**
+ * 
+ * @param {Object} param0
+ * @param {Class} param0.route - Accept the routing class
+ * @param {String} param0.currentRoute
+ * @param {Boolean} param0.switcher - True / False
+ * @param {Boolean} param0.setHashHistory - True / False
+ */
+export function autoRouting({
+    router = {},
+    currentRoute = null,
+    switcher = null,
+    setHashHistory = false,
+}) {
+    function routeResolve(cb) {
+
+
+        let id = location.hash.replace("#", "");
+
+
+        id = cb(id);
+
+        if (!id) {
+            id = 'home'; // default route
+        }
+
+        // Check if the route exists
+        if (Object.keys(router.pages).includes(id)) {
+            // Push current route to hide it
+            router.push(currentRoute);
+            // Load the new route
+            router.load(id);
+            // Update current route
+            currentRoute = id;
+            // Update isHome flag
+            switcher = (id === 'home');
+            console.log(switcher)
+        }
+
+        if (setHashHistory) {
+            // Save the hash page 
+            localStorage.setItem("hash_history", currentRoute);
+        }
+    }
+
+    // Listen for hash changes to automatically route
+    window.addEventListener('hashchange', routeResolve);
+
+    // Route on initial load
+    window.addEventListener("load", () => {
+        routeResolve((id) => {
+            /**Retrieve current cached hashed pages */
+            let __hash_his = localStorage.getItem("hash_history");
+
+            /**Comment: Check if the given hash exist */
+            if (__hash_his) {
+                if (setHashHistory) {
+                    id = __hash_his;
+                    localStorage.removeItem("hash_history");
+                }
+            }
+        })
+    });
+}
